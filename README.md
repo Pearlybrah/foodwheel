@@ -1,12 +1,10 @@
 # foodwheel aka WTE
-**WhatToEat**
+### What To Eat
 
-
-
-#FINAL PROJECT LAYOUT
-###OVERVIEW
+## FINAL PROJECT LAYOUT
+### OVERVIEW
 To create a simple user experience of easily deciding what to eat when hungry. The user will login and create an account to store favorite cuisines and restaurants catered to the user specifically. The user then spins the roulette wheel and where the ball lands the user is then displayed a list of restaurants in relation to the cuisine randomly picked. The user then can like or dislike the restaurant and saved to their profile. Users can join other users “Tables” for a meal and the roulette table is then dynamically generated with each specific users choices of restaurants or cuisines.
-###TECHNOLOGIES
+### TECHNOLOGIES
 * Reactjs
 * HTML5
 * CSS3
@@ -16,25 +14,23 @@ To create a simple user experience of easily deciding what to eat when hungry. T
 * express.js(middleware)
 * Heroku(Deployment)
 * Node.js(server)
-###NEW TECHNOLOGIES
+### NEW TECHNOLOGIES
 * passport.js (user authentication)
 * winwheel.js(TENTATIVE)
 * bcrypt(NPM package to encrypt user data) 
-###APIs
+### APIs
 * Google Maps
 * Yelp (TENTATIVE)
 
-
-
-#DUTIES
-###Front End
+## DUTIES
+### FRONT END
 * Components
 * Polished front end experience/ color themes
 * Responsive Design
 * CSS animation
 * Google Maps API implementation
 * User authentication (passport.js)
-###Back End
+### BACK END
 * Server setup
 * Database Structure
 * Get/Post requests

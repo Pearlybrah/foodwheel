@@ -2,9 +2,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-
-const restuarants = require("./routes/api/restuarants");
-
 const app = express();
 
 const PORT = process.env.PORT || 3001;
@@ -18,7 +15,8 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
 // Add routes, both API and view
-app.use("/api/restuarants", restuarants);
+require("./routes/api/restuarants")(app);
+require("./routes/api/signin")(app);
 
 //DB config
 const db = require("./config/keys").mongoURI;
@@ -33,3 +31,5 @@ mongoose
 app.listen(PORT, function() {
   console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
 });
+
+module.exports = app;

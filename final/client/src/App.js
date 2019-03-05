@@ -1,10 +1,14 @@
 import React, { Component } from "react";
+import DisplayPage from "./components/DisplayPage";
 import "./App.css";
-import Userlogin from "./Components/UserLogin/Userlogin";
 
 class App extends Component {
   render() {
-    return <Userlogin />;
+    return (
+      <div className="App">
+        <DisplayPage />
+      </div>
+    );
   }
 }
 

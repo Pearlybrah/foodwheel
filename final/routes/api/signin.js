@@ -65,7 +65,7 @@ module.exports = app => {
     );
   });
 
-  app.post("/api/account/signin", (req, res, next) => {
+  app.post("/api/account/signin", (req, res) => {
     const { body } = req;
     const { password } = body;
     let { email } = body;
@@ -122,5 +122,59 @@ module.exports = app => {
         }
       );
     }
+  });
+
+  app.get("/api/account/verify", (req, res) => {
+    const { query } = req;
+    const { token } = query;
+
+    UserSession.find(
+      {
+        _id: token,
+        isDeleted: false
+      },
+      (err, sessions) => {
+        if ((err, sessions)) {
+          return res.send({
+            success: false,
+            message: "Server error"
+          });
+        }
+        if (sessions.length != -1) {
+          return res.send({
+            success: true,
+            message: "Success"
+          });
+        }
+      }
+    );
+  });
+
+  app.get("/api/account/logout", (req, res) => {
+    const { query } = req;
+    const { token } = query;
+
+    UserSession.findOneAndUpdate(
+      {
+        _id: token,
+        isDeleted: false
+      },
+      {
+        $set: { isDeleted: true }
+      },
+      null,
+      err => {
+        if (err) {
+          return res.send({
+            success: false,
+            message: "Server error"
+          });
+        }
+        return res.send({
+          success: true,
+          message: "Success"
+        });
+      }
+    );
   });
 };

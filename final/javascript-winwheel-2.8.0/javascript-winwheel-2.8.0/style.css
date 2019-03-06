@@ -1,0 +1,23 @@
+body{
+background:
+    linear-gradient(
+    rgb(242,153,74,.6)
+    , rgb(242,201,76,.6)
+    ),
+	/* bottom, image */
+	 url("./pizza.jpg")
+	 no-repeat
+     fixed;
+     text-align: center;
+     width: 98%;
+     height: 40em;
+}
+
+#image{
+    margin:3em;
+    width:18%;
+}
+
+#text{
+    width:30%;
+}

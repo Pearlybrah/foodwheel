@@ -2,7 +2,7 @@
   "name": "final",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3001/",
+  "proxy": "http://localhost:127.0.0.1",
   "dependencies": {
     "passport": "^0.4.0",
     "react": "^16.8.3",

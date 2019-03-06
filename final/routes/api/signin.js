@@ -1,4 +1,3 @@
-const express = require("express");
 const User = require("../../models/User");
 const UserSession = require("../../models/UserSession");
 
@@ -65,10 +64,11 @@ module.exports = app => {
     );
   });
 
-  app.post("/api/account/signin", (req, res) => {
+  app.post("/api/account/signin", (req, res, next) => {
     const { body } = req;
     const { password } = body;
     let { email } = body;
+    email = email.toLowerCase();
 
     if (!email) {
       res.send({
@@ -82,8 +82,6 @@ module.exports = app => {
         message: "Error: Password Can Not Be Blank"
       });
 
-      email = email.toLowerCase();
-
       User.find(
         {
           email: email
@@ -96,7 +94,7 @@ module.exports = app => {
             });
           }
           if (users.length != 1) {
-            return res.send({ success: true, message: "Invalid" });
+            return res.send({ success: false, message: "Invalid" });
           }
 
           const user = users[0];
@@ -124,7 +122,7 @@ module.exports = app => {
     }
   });
 
-  app.get("/api/account/verify", (req, res) => {
+  app.get("/api/account/verify", (req, res, next) => {
     const { query } = req;
     const { token } = query;
 
@@ -150,7 +148,7 @@ module.exports = app => {
     );
   });
 
-  app.get("/api/account/logout", (req, res) => {
+  app.get("/api/account/logout", (req, res, next) => {
     const { query } = req;
     const { token } = query;
 

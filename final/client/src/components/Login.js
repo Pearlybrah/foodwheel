@@ -93,7 +93,8 @@ class Login extends Component {
   onSignIn = event => {
     event.preventDefault();
     const { signInEmail, signInPassword } = this.state;
-
+    this.setState({ isLoading: true });
+    console.log("signin", signInEmail);
     fetch("/api/account/signin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -109,8 +110,8 @@ class Login extends Component {
           this.setState({
             signInError: json.message,
             isLoading: false,
-            signUpEmail: "",
-            signUpPassword: "",
+            signInEmail: "",
+            signInPassword: "",
             token: json.token
           });
         } else {
@@ -120,6 +121,29 @@ class Login extends Component {
           });
         }
       });
+  };
+
+  logout = event => {
+    event.preventDefault();
+
+    const obj = getFromStorage("the-main-app");
+    if (obj && obj.token) {
+      const { token } = obj;
+      fetch("/api/account/logout?token=" + token)
+        .then(res => res.json())
+        .then(json => {
+          if (json.success) {
+            this.setState({
+              token: "",
+              isLoading: false
+            });
+          } else {
+            this.setState({
+              isLoading: false
+            });
+          }
+        });
+    }
   };
 
   render() {
@@ -211,6 +235,7 @@ class Login extends Component {
     return (
       <div>
         <p>Account</p>
+        <button onClick={this.logout}>Logout</button>
       </div>
     );
   }

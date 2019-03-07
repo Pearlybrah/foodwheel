@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import Login from "./Login";
-import NavBar from "./NavBar/NavBar";
-import DisplayPage from "./DisplayPage";
+import Login from "../Login";
+import NavBar from "../NavBar/NavBar";
+import DisplayPage from "../DisplayPage/DisplayPage";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 function LandingPage() {

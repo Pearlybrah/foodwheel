@@ -12,7 +12,6 @@ function NavBar() {
           <Link to="/account">My Account</Link>
         </li>
       </ul>
-      ))}
     </div>
   );
 }

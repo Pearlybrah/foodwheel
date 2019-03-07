@@ -10,9 +10,15 @@ Verison History:
     - Minor updates for the 2.0 winwheel example.
 */
 
+@font-face {
+    font-family:"market_fresh";
+    src: url("marketfresh.ttf") /* TTF file for CSS3 browsers */
+}
+
 body
 {
-    font-family: arial;
+    font-family: "market_fresh";
+    background: linear-gradient(#F2994A,#F2C94C)
 }
 
 /* Sets the background image for the wheel */
@@ -42,30 +48,40 @@ div.html5_logo
 /* Styles for the power selection controls */
 table.power
 {
-    background-color: #cccccc;
+    background-color: rgb(255, 255, 255, .2);
     cursor: pointer;
-    border:1px solid #333333;
+    border-radius: 10px;
+    
 }
 
 table.power th
 {
-    background-color: white;
+    background-color: #f8f8f8;
     cursor: default;
+    border-radius: 10px;
+    font-size: 18px;
+    color:#181818;
 }
 
 td.pw1
 {
     background-color: #6fe8f0;
+    border-radius: 10px;
+    color:#181818;
 }
 
 td.pw2
 {
     background-color: #86ef6f;
+    border-radius: 10px;
+    color:#181818;
 }
 
 td.pw3
 {
     background-color: #ef6f6f;
+    border-radius: 10px;
+    color:#181818;
 }
 
 /* Style applied to the spin button once a power has been selected */

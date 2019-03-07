@@ -1,10 +1,10 @@
 <!--
-    Winhweel.js hollow (doughnut) code wheel example by Douglas McKechie @ www.dougtesting.net
+    Winhweel.js 2-part wheel example by Douglas McKechie @ www.dougtesting.net
     See website for tutorials and other documentation.
 
     The MIT License (MIT)
 
-    Copyright (c) 2016 Douglas McKechie
+    Copyright (c) 2017 Douglas McKechie
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -33,15 +33,7 @@
     </head>
     <body>
         <div align="center">
-            <h1>Winwheel.js example wheel - hollow wheel</h1>
-            <p>Here is an example of a basic hollow (doughnut) code drawn wheel which spins to a stop with the prize won alerted to the user.</p>
-            <br />
-            <p>
-                The point of this example is to show how with a hollow wheel you can put text or other visual elements on the background image
-                and it will show in the middle of the wheel and stay stationary when the wheel spins.
-            </p>
-            <br />
-            <p>Choose a power setting then press the Spin button. You will be alerted to the prize won when the spinning stops.</p>
+            <p>What to Eat</p>
             <br />
             <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
@@ -65,8 +57,6 @@
                             </table>
                             <br />
                             <img id="spin_button" src="spin_off.png" alt="Spin" onClick="startSpin();" />
-                            <br /><br />
-                            &nbsp;&nbsp;<a href="#" onClick="resetWheel(); return false;">Play Again</a><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reset)
                         </div>
                     </td>
                     <td width="438" height="582" class="the_wheel" align="center" valign="center">
@@ -78,41 +68,92 @@
             </table>
         </div>
         <script>
-            // Create new wheel object specifying the parameters at creation time.
-            let theWheel = new Winwheel({
-                'numSegments'   : 16,   // Specify number of segments.
-                'outerRadius'   : 212,  // Set radius to so wheel fits the background.
-                'innerRadius'   : 120,  // Set inner radius to make wheel hollow.
-                'textFontSize'  : 16,   // Set font size accordingly.
-                'textMargin'    : 0,    // Take out default margin.
-                'segments'      :       // Define segments including colour and text.
-                [
-                   {'fillStyle' : '#eae56f', 'text' : 'Prize 1'},
-                   {'fillStyle' : '#89f26e', 'text' : 'Prize 2'},
-                   {'fillStyle' : '#7de6ef', 'text' : 'Prize 3'},
-                   {'fillStyle' : '#e7706f', 'text' : 'Prize 4'},
-                   {'fillStyle' : '#eae56f', 'text' : 'Prize 5'},
-                   {'fillStyle' : '#89f26e', 'text' : 'Prize 6'},
-                   {'fillStyle' : '#7de6ef', 'text' : 'Prize 7'},
-                   {'fillStyle' : '#e7706f', 'text' : 'Prize 8'},
-                   {'fillStyle' : '#eae56f', 'text' : 'Prize 9'},
-                   {'fillStyle' : '#89f26e', 'text' : 'Prize 10'},
-                   {'fillStyle' : '#7de6ef', 'text' : 'Prize 11'},
-                   {'fillStyle' : '#e7706f', 'text' : 'Prize 12'},
-                   {'fillStyle' : '#eae56f', 'text' : 'Prize 13'},
-                   {'fillStyle' : '#89f26e', 'text' : 'Prize 14'},
-                   {'fillStyle' : '#7de6ef', 'text' : 'Prize 15'},
-                   {'fillStyle' : '#e7706f', 'text' : 'Prize 16'}
+            // Need to create the SECONDARY wheel first because on construct the variable which keeps track of the wheel to animate will
+            // be set to the last created wheel, and we want the outer one the primary with the animation etc.
+            let innerWheel = new Winwheel({
+                'numSegments' : 4,
+                'outerRadius' : 110,        // Set the outer radius to make the wheel smaller than the outer wheel.
+                'segments': [
+                    {'fillStyle' : '#4DB6AC', 'text' : 'French'},
+                    {'fillStyle' : '#3949AB', 'text' : 'Italian'},
+                    {'fillStyle' : '#1DE9B6', 'text' : 'Mexican'},
+                    {'fillStyle' : '#FFFF00', 'text' : 'Chinese'}
+                ]
+            });
+
+            // Define the outer wheel, we will treat this as the PRIMARY which means it clears the canvas when drawing and also
+            // gets the animaton applied to it. We must callback a function during the animation to move and draw the inner wheel
+            // so the 2 wheels appear as one thing on the canvas.
+            let outerWheel = new Winwheel({
+                'numSegments': 16,
+                'textMargin' : 0,
+                'outerRadius' : 210,
+                'innerRadius' : 110,    // Set inner radius to the size of the inner wheel since the inner part of the wheel
+                'segments': [           //   is being drawn by the inner wheel we don't need to draw there.
+                    {'fillStyle' : '#4DB6AC', 'text' : 'Choice 1'},
+                    {'fillStyle' : '#4DB6AC', 'text' : 'Choice 2'},
+                    {'fillStyle' : '#4DB6AC', 'text' : 'Choice 3'},
+                    {'fillStyle' : '#4DB6AC', 'text' : 'Choice 4'},
+                    {'fillStyle' : '#3949AB', 'text' : 'Choice 1'},
+                    {'fillStyle' : '#3949AB', 'text' : 'Choice 2'},
+                    {'fillStyle' : '#3949AB', 'text' : 'Choice 3'},
+                    {'fillStyle' : '#3949AB', 'text' : 'Choice 4'},
+                    {'fillStyle' : '#1DE9B6', 'text' : 'Choice 1'},
+                    {'fillStyle' : '#1DE9B6', 'text' : 'Choice 2'},
+                    {'fillStyle' : '#1DE9B6', 'text' : 'Choice 3'},
+                    {'fillStyle' : '#1DE9B6', 'text' : 'Choice 4'},
+                    {'fillStyle' : '#FFFF00', 'text' : 'Choice 1'},
+                    {'fillStyle' : '#FFFF00', 'text' : 'Choice 2'},
+                    {'fillStyle' : '#FFFF00', 'text' : 'Choice 3'},
+                    {'fillStyle' : '#FFFF00', 'text' : 'Choice 4'}
+                    
                 ],
-                'animation' :           // Define spin to stop animation.
+                'animation':
                 {
-                    'type'     : 'spinToStop',
-                    'duration' : 5,
-                    'spins'    : 8,
-                    'callbackFinished' : alertPrize
+                  'type': 'spinToStop',                     // Define animation more or less as normal, except for the callbackAfter().
+                  'duration': 5,
+                  'spins': 5,
+                  'easing': 'Power3.easeOut',
+                  'callbackAfter' : drawInnerWheel,     // Call back after each frame of the animation a function we can draw the inner wheel from.
+                  'callbackFinished': alertPrize
                 }
             });
 
+            // Call draw on the outerWheel then the inner wheel to ensure that both are rendered on the canvas.
+            outerWheel.draw();
+            innerWheel.draw(false);   // Pass false to stop it clearing the canvas and wiping the outer wheel.
+
+            // This function is called after the outer wheel has drawn during the animation.
+            function drawInnerWheel()
+            {
+                // Update the rotationAngle of the innnerWheel to match that of the outer wheel - this is a big part of what
+                // links them to appear as one 2-part wheel. Call the draw function passing false so the outer wheel is not wiped.
+                innerWheel.rotationAngle = outerWheel.rotationAngle;
+                innerWheel.draw(false);
+            }
+
+            // Called when the animation has finished.
+            function alertPrize()
+            {
+                // The the indicated segments from the 2 wheels.
+                let winningInnerSegment = innerWheel.getIndicatedSegment();
+                let winningOuterSegment = outerWheel.getIndicatedSegment();
+
+                // Alert the combination of prizes won.
+                alert('You will be eating ' + winningInnerSegment.text + ', at ' + winningOuterSegment.text);
+
+                // Set things so power and spin button can be clicked again.
+                wheelSpinning = false;
+
+                // Remove all colours from the power level indicators.
+                document.getElementById('pw1').className = "";
+                document.getElementById('pw2').className = "";
+                document.getElementById('pw3').className = "";
+            }
+
+
+            // ================================================================================================================
+            // FUNCTIONS FOR power controls below (All this is not necessary to actually create and spin a wheel)....
             // Vars used by the code in this page to do power controls.
             let wheelPower    = 0;
             let wheelSpinning = false;
@@ -158,14 +199,25 @@
             {
                 // Ensure that spinning can't be clicked again while already running.
                 if (wheelSpinning == false) {
+                    // Reset things with inner and outer wheel so spinning will work as expected. Without the reset the
+                    // wheel will probably just move a small amount since the rotationAngle would be close to the targetAngle
+                    // figured out by the animation.
+                    outerWheel.stopAnimation(false);  // Stop the animation, false as param so does not call callback function.
+                    outerWheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
+                    outerWheel.draw();                // Call draw to render changes to the wheel.
+                    innerWheel.rotationAngle = 0;
+                    innerWheel.draw(false);
+
                     // Based on the power level selected adjust the number of spins for the wheel, the more times is has
                     // to rotate with the duration of the animation the quicker the wheel spins.
                     if (wheelPower == 1) {
-                        theWheel.animation.spins = 3;
+                        outerWheel.animation.spins = 3;     // Number of spins and/or duration can be altered to make the wheel
+                        outerWheel.animation.duration = 7;  // appear to spin faster or slower.
                     } else if (wheelPower == 2) {
-                        theWheel.animation.spins = 8;
+                        outerWheel.animation.spins = 8;
+                        outerWheel.animation.duration = 7;
                     } else if (wheelPower == 3) {
-                        theWheel.animation.spins = 15;
+                        outerWheel.animation.spins = 15;
                     }
 
                     // Disable the spin button so can't click again while wheel is spinning.
@@ -173,38 +225,12 @@
                     document.getElementById('spin_button').className = "";
 
                     // Begin the spin animation by calling startAnimation on the wheel object.
-                    theWheel.startAnimation();
+                    outerWheel.startAnimation();
 
                     // Set to true so that power can't be changed and spin button re-enabled during
                     // the current animation. The user will have to reset before spinning again.
                     wheelSpinning = true;
                 }
-            }
-
-            // -------------------------------------------------------
-            // Function for reset button.
-            // -------------------------------------------------------
-            function resetWheel()
-            {
-                theWheel.stopAnimation(false);  // Stop the animation, false as param so does not call callback function.
-                theWheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
-                theWheel.draw();                // Call draw to render changes to the wheel.
-
-                document.getElementById('pw1').className = "";  // Remove all colours from the power level indicators.
-                document.getElementById('pw2').className = "";
-                document.getElementById('pw3').className = "";
-
-                wheelSpinning = false;          // Reset to false to power buttons and spin can be clicked again.
-            }
-
-            // -------------------------------------------------------
-            // Called when the spin animation has finished by the callback feature of the wheel because I specified callback in the parameters.
-            // note the indicated segment is passed in as a parmeter as 99% of the time you will want to know this to inform the user of their prize.
-            // -------------------------------------------------------
-            function alertPrize(indicatedSegment)
-            {
-                // Do basic alert of the segment text. You would probably want to do something more interesting with this information.
-                alert("You have won " + indicatedSegment.text);
             }
         </script>
     </body>

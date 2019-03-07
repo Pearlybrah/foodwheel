@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import Details from "./Details";
-import API from "../utils/API";
-import Card from "./Card";
+import Details from "../Details";
+import API from "../../utils/API";
+import Card from "../Card";
     
 class YelpApiSearch extends Component {
     state = {

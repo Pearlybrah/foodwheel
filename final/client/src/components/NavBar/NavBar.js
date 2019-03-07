@@ -1,14 +1,18 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 
 function NavBar() {
   return (
     <div>
-      <Router>
-        <nav>
-          <li />
-        </nav>
-      </Router>
+      <ul>
+        <li>
+          <Link to="/mytable">My Table</Link>
+        </li>
+        <li>
+          <Link to="/account">My Account</Link>
+        </li>
+      </ul>
+      ))}
     </div>
   );
 }

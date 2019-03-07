@@ -7,10 +7,13 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 function LandingPage() {
   return (
     <Router>
-      <Switch>
-        <Route exact path="/" component={Login} />
-        <Route path="/restuarantdata" component={DisplayPage} />
-      </Switch>
+      <div>
+        <Route component={NavBar} />
+        <Switch>
+          <Route path="/account" component={Login} />
+          <Route path="/mytable" component={DisplayPage} />
+        </Switch>
+      </div>
     </Router>
   );
 }

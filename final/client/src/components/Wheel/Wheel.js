@@ -1,85 +1,91 @@
-import React from "react";
+import React, { Component } from "react";
 import "./style.css";
 import "./Winwheel";
+class Wheel extends Component {
 
-//<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script> is saved in the HTML public folder
-//Settings of Inner Wheel
-let innerWheel = new Winwheel({
-    'numSegments' : 4,
-    'outerRadius' : 110,        // Set the outer radius to make the wheel smaller than the outer wheel.
-    'segments': [
-        {'fillStyle' : '#4DB6AC', 'text' : 'French'},
-        {'fillStyle' : '#3949AB', 'text' : 'Italian'},
-        {'fillStyle' : '#1DE9B6', 'text' : 'Mexican'},
-        {'fillStyle' : '#FFFF00', 'text' : 'Chinese'}
-    ]
-});
+componentDidMount() {
+    //<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script> is saved in the HTML public folder
+    //Settings of Inner Wheel
+    let innerWheel = new Winwheel({
+        'numSegments' : 4,
+        'outerRadius' : 110,        // Set the outer radius to make the wheel smaller than the outer wheel.
+        'segments': [
+            {'fillStyle' : '#4DB6AC', 'text' : 'French'}, //Text is where the CUISINE (correct) will go from API
+            {'fillStyle' : '#3949AB', 'text' : 'Italian'},
+            {'fillStyle' : '#1DE9B6', 'text' : 'Mexican'},
+            {'fillStyle' : '#FFFF00', 'text' : 'Chinese'}
+        ]
+    });
 
-//Settings of Outer wheel
-let outerWheel = new Winwheel({
-    'numSegments': 16,
-    'textMargin' : 0,
-    'outerRadius' : 210,
-    'innerRadius' : 110,    // Set inner radius to the size of the inner wheel since the inner part of the wheel
-    'segments': [           //   is being drawn by the inner wheel we don't need to draw there.
-        {'fillStyle' : '#4DB6AC', 'text' : 'Choice 1'},
-        {'fillStyle' : '#4DB6AC', 'text' : 'Choice 2'},
-        {'fillStyle' : '#4DB6AC', 'text' : 'Choice 3'},
-        {'fillStyle' : '#4DB6AC', 'text' : 'Choice 4'},
-        {'fillStyle' : '#3949AB', 'text' : 'Choice 1'},
-        {'fillStyle' : '#3949AB', 'text' : 'Choice 2'},
-        {'fillStyle' : '#3949AB', 'text' : 'Choice 3'},
-        {'fillStyle' : '#3949AB', 'text' : 'Choice 4'},
-        {'fillStyle' : '#1DE9B6', 'text' : 'Choice 1'},
-        {'fillStyle' : '#1DE9B6', 'text' : 'Choice 2'},
-        {'fillStyle' : '#1DE9B6', 'text' : 'Choice 3'},
-        {'fillStyle' : '#1DE9B6', 'text' : 'Choice 4'},
-        {'fillStyle' : '#FFFF00', 'text' : 'Choice 1'},
-        {'fillStyle' : '#FFFF00', 'text' : 'Choice 2'},
-        {'fillStyle' : '#FFFF00', 'text' : 'Choice 3'},
-        {'fillStyle' : '#FFFF00', 'text' : 'Choice 4'}
-        
-    ],
-    'animation':
+
+    //Settings of Outer wheel
+    let outerWheel = new Winwheel({
+        'numSegments': 16,
+        'textMargin' : 0,
+        'outerRadius' : 210,
+        'innerRadius' : 110,    // Set inner radius to the size of the inner wheel since the inner part of the wheel
+        'segments': [           //   is being drawn by the inner wheel we don't need to draw there.
+            {'fillStyle' : '#4DB6AC', 'text' : 'Choice 1'}, 
+            {'fillStyle' : '#4DB6AC', 'text' : 'Choice 2'}, //Text is where the RESTURANT will go from API
+            {'fillStyle' : '#4DB6AC', 'text' : 'Choice 3'},
+            {'fillStyle' : '#4DB6AC', 'text' : 'Choice 4'},
+            {'fillStyle' : '#3949AB', 'text' : 'Choice 1'},
+            {'fillStyle' : '#3949AB', 'text' : 'Choice 2'},
+            {'fillStyle' : '#3949AB', 'text' : 'Choice 3'},
+            {'fillStyle' : '#3949AB', 'text' : 'Choice 4'},
+            {'fillStyle' : '#1DE9B6', 'text' : 'Choice 1'},
+            {'fillStyle' : '#1DE9B6', 'text' : 'Choice 2'},
+            {'fillStyle' : '#1DE9B6', 'text' : 'Choice 3'},
+            {'fillStyle' : '#1DE9B6', 'text' : 'Choice 4'},
+            {'fillStyle' : '#FFFF00', 'text' : 'Choice 1'},
+            {'fillStyle' : '#FFFF00', 'text' : 'Choice 2'},
+            {'fillStyle' : '#FFFF00', 'text' : 'Choice 3'},
+            {'fillStyle' : '#FFFF00', 'text' : 'Choice 4'}
+            
+        ],
+        'animation':
+        {
+        'type': 'spinToStop',                     // Define animation more or less as normal, except for the callbackAfter().
+        'duration': 5,
+        'spins': 5,
+        'easing': 'Power3.easeOut',
+        'callbackAfter' : drawInnerWheel,     // Call back after each frame of the animation a function we can draw the inner wheel from.
+        'callbackFinished': alertPrize
+        }
+    });
+
+    outerWheel.draw(); 
+    innerWheel.draw(false);
+    
+    function drawInnerWheel()
     {
-      'type': 'spinToStop',                     // Define animation more or less as normal, except for the callbackAfter().
-      'duration': 5,
-      'spins': 5,
-      'easing': 'Power3.easeOut',
-      'callbackAfter' : drawInnerWheel,     // Call back after each frame of the animation a function we can draw the inner wheel from.
-      'callbackFinished': alertPrize
+        // Update the rotationAngle of the innnerWheel to match that of the outer wheel - this is a big part of what
+        // links them to appear as one 2-part wheel. Call the draw function passing false so the outer wheel is not wiped.
+        innerWheel.rotationAngle = outerWheel.rotationAngle;
+        innerWheel.draw(false);
     }
-});
-
-function drawInnerWheel()
-            {
-                // Update the rotationAngle of the innnerWheel to match that of the outer wheel - this is a big part of what
-                // links them to appear as one 2-part wheel. Call the draw function passing false so the outer wheel is not wiped.
-                innerWheel.rotationAngle = outerWheel.rotationAngle;
-                innerWheel.draw(false);
-            }
-
-// Alert on what the user landed on when the animation has finished.
-function alertPrize()
-{
+    
+    // Alert on what the user landed on when the animation has finished.
+    function alertPrize()
+    {
     // The the indicated segments from the 2 wheels.
     let winningInnerSegment = innerWheel.getIndicatedSegment();
     let winningOuterSegment = outerWheel.getIndicatedSegment();
-
+    
     // Alert the combination of prizes won.
     alert('You will be eating ' + winningInnerSegment.text + ', at ' + winningOuterSegment.text);
-
+    
     // Set things so power and spin button can be clicked again.
     wheelSpinning = false;
-
+    
     // Remove all colours from the power level indicators.
     document.getElementById('pw1').className = "";
     document.getElementById('pw2').className = "";
     document.getElementById('pw3').className = "";
 }
 
-            // ================================================================================================================
-            // FUNCTIONS FOR power controls below (All this is not necessary to actually create and spin a wheel)....
+// ================================================================================================================
+// FUNCTIONS FOR power controls below (All this is not necessary to actually create and spin a wheel)....
             // Vars used by the code in this page to do power controls.
             let wheelPower    = 0;
             let wheelSpinning = false;
@@ -95,29 +101,29 @@ function alertPrize()
                     document.getElementById('pw1').className = "";
                     document.getElementById('pw2').className = "";
                     document.getElementById('pw3').className = "";
-
+                    
                     // Now light up all cells below-and-including the one selected by changing the class.
                     if (powerLevel >= 1) {
                         document.getElementById('pw1').className = "pw1";
                     }
-
+                    
                     if (powerLevel >= 2) {
                         document.getElementById('pw2').className = "pw2";
                     }
-
+                    
                     if (powerLevel >= 3) {
                         document.getElementById('pw3').className = "pw3";
                     }
-
+                    
                     // Set wheelPower var used when spin button is clicked.
                     wheelPower = powerLevel;
-
+                    
                     // Light up the spin button by changing it's source image and adding a clickable class to it.
                     document.getElementById('spin_button').src = "spin_on.png";
                     document.getElementById('spin_button').className = "clickable";
                 }
             }
-
+            
             // -------------------------------------------------------
             // Click handler for spin button.
             // -------------------------------------------------------
@@ -133,7 +139,7 @@ function alertPrize()
                     outerWheel.draw();                // Call draw to render changes to the wheel.
                     innerWheel.rotationAngle = 0;
                     innerWheel.draw(false);
-
+                    
                     // Based on the power level selected adjust the number of spins for the wheel, the more times is has
                     // to rotate with the duration of the animation the quicker the wheel spins.
                     if (wheelPower == 1) {
@@ -145,24 +151,23 @@ function alertPrize()
                     } else if (wheelPower == 3) {
                         outerWheel.animation.spins = 15;
                     }
-
+                    
                     // Disable the spin button so can't click again while wheel is spinning.
                     document.getElementById('spin_button').src       = "spin_off.png";
                     document.getElementById('spin_button').className = "";
-
+                    
                     // Begin the spin animation by calling startAnimation on the wheel object.
                     outerWheel.startAnimation();
-
+                    
                     // Set to true so that power can't be changed and spin button re-enabled during
                     // the current animation. The user will have to reset before spinning again.
                     wheelSpinning = true;
                 }
             }
-
-//Rendering of component
-function Wheel() {
-    return (
-        <div align="center">
+        }
+            render() { 
+        return (
+            <div align="center">
         <br />
         <table cellpadding="0" cellspacing="0" border="0">
             <tr>
@@ -190,7 +195,6 @@ function Wheel() {
                 </td>
                 <td width="438" height="582" className="the_wheel" align="center" valign="center">
                     <canvas id="canvas" width="434" height="434">
-                        // {Where these would render outerWheel.draw(); innerWheel.draw(false);}
                         <p style="{color: white}" align="center">Sorry, your browser doesn't support canvas. Please try another.</p>
                     </canvas>
                 </td>
@@ -198,6 +202,34 @@ function Wheel() {
         </table>
     </div>
     );
-  }
+    }
+}        
 
   export default Wheel;
+
+  // ********CHATBOX************
+// ED theres this blog post about canvas and react I'm reading
+// https://blog.cloudboost.io/using-html5-canvas-with-react-ff7d93f5dc76
+//thumbs up
+//first thing I see is the extending of react components (class Canvas extends React.Component)
+//looking good so far
+// ED I'm going to change it to a stateful component
+//looking good! I just dropped these changes into the boilerplate and this is what I got
+//  Line 34:     'defaultOptions' is not defined  no-undef
+//Line 69:    'defaultOptions' is not defined  no-undef
+//Line 73:    'defaultOptions' is not defined  no-undef
+//Line 1747:  'TweenMax' is not defined        no-undef
+//Oh damn its on another file its the Winwheel.js
+// ED yes
+// Do you have access to that file?
+//okay
+// the only 2 remaining warnings are in regards to the winwheel constructor, I was looking up if a constructor could be imported into a class
+// also, we should move the chat box to the bottom of the doc
+// yeah that would wise
+//shoot I feel my body starting to grind into a halt I think I might have to head home and nap for like an hour or so. Went to work this morning
+// and havent napped yet ughhhhh
+// okie doike, wondering if this is worth uploading as a seperate repo, so I could continue to work on it. maybe a branch will do
+// Whichever you like I can make a repo
+// I think a branch will be quicker
+//alright sounds good
+// ***************************

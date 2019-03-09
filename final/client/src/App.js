@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import LandingPage from "././components/LandingPage/LandingPage";
+import Wheel from "././components/Wheel/Wheel";
 import "./App.css";
 
 class App extends Component {
   render() {
     return (
       <div>
-        <LandingPage />
+        <Wheel />
       </div>
     );
   }
